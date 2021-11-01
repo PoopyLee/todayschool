@@ -11,6 +11,7 @@ import (
 	_ "gopkg.in/yaml.v2"
 	"log"
 	"os"
+	"runtime"
 	"strings"
 	"time"
 	"todayschool/browser"
@@ -47,10 +48,22 @@ func todayschool() {
 	toform := new(controller.SubmitForm)
 	con := config.GetConfig()
 	if len(con.MOD_AUTH_CAS) == 0 {
-		log.Println("config.json文件中的MOD_AUTH_CAS为空,打开浏览器获取中....")
-		color.New(color.BgHiRed).Println("config.json文件中的MOD_AUTH_CAS为空,打开浏览器获取中....")
-		browser.OpenBrowser(con) //打开浏览器获取MOD_AUTH_CAS
-		config.UpdateConfig(con) //更新配置
+		switch runtime.GOOS {
+		case "windows":
+			log.Println("当前系统为:", runtime.GOOS)
+			color.New(color.BgHiRed).Println("当前系统为:", runtime.GOOS)
+			log.Println("config.json文件中的MOD_AUTH_CAS为空,打开浏览器获取中....")
+			color.New(color.BgHiRed).Println("config.json文件中的MOD_AUTH_CAS为空,打开浏览器获取中....")
+			browser.OpenBrowser(con) //打开浏览器获取MOD_AUTH_CAS
+			config.UpdateConfig(con) //更新配置
+		case "linux":
+			log.Println("当前系统为:", runtime.GOOS)
+			color.New(color.BgHiRed).Println("当前系统为:", runtime.GOOS)
+			log.Println("config.json文件中的MOD_AUTH_CAS为空,需要手动填写！！")
+			color.New(color.BgHiRed).Println("config.json文件中的MOD_AUTH_CAS为空,需要手动填写！！")
+			color.New(color.BgHiRed).Println("程序暂停运行.....")
+			return
+		}
 	} else if len(con.Address) == 0 {
 		log.Println("config.json文件中的Address为空，请填写！")
 		color.New(color.BgHiRed).Println("config.json文件中的Address为空，请填写！")
