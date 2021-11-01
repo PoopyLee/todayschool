@@ -31,7 +31,6 @@ func init() {
                                                                         
                                                                         
                                                                         `)
-
 	c = color.New(color.FgHiYellow)
 	c.Println("如果输入错误，请查看本程序所在目录下的两个文件，分别是config.json和lilvwei.json，删除即可重新配置！")
 	color.New(color.FgHiGreen).Println("程序开始运行了，等待整点运行---->每一小时运行一次")
@@ -44,7 +43,6 @@ func main() {
 	StartTimeFunc(SetlogFile)
 	StartTimeFunc(todayschool)
 }
-
 func todayschool() {
 	toform := new(controller.SubmitForm)
 	con := config.GetConfig()
