@@ -32,12 +32,9 @@ func init() {
                                                                         
                                                                         `)
 
-	//----------------------------------------
-	// Create a new color object
 	c = color.New(color.FgHiYellow)
 	c.Println("如果输入错误，请查看本程序所在目录下的两个文件，分别是config.json和lilvwei.json，删除即可重新配置！")
 	color.New(color.FgHiGreen).Println("程序开始运行了，等待整点运行---->每一小时运行一次")
-
 	config.GetConfig() //初始化配置文件
 }
 
