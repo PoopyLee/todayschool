@@ -9,6 +9,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"time"
 )
 
 //配置类
@@ -77,7 +78,10 @@ func GetConfig() *RootConfig {
 		input := bufio.NewScanner(os.Stdin)
 
 		h.BaseUrl = "yibinu.campusphere.net"
+
+		rand.Seed(time.Now().Unix()) //添加随机数种子
 		h.PhoneModel = Phones[rand.Intn(len(Phones))]
+
 		color.New(color.FgGreen).Println("<---请输入学号(回车提交,仅用于登录，并不会提交给第三方)")
 		input.Scan()
 		h.UserID = input.Text()
