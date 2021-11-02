@@ -3,6 +3,7 @@ package controller
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -62,23 +63,22 @@ func PostProcessingList(con *config.RootConfig) (string, int) {
 	list := new(ProcessingList)
 	body, _ := ioutil.ReadAll(resp.Body)
 	json.Unmarshal(body, &list)
-
-	if len(list.Datas.Rows) > 0 {
-		for k, v := range list.Datas.Rows {
-			log.Println(k+1, "条待处理")
-			log.Println("发布人：", v.SenderUserName)
-			log.Println("创建时间：", v.CreateTime)
-			log.Println("开始时间：", v.StartTime)
-			log.Println("结束时间：", v.EndTime)
-			log.Println("当前时间：", v.CurrentTime)
-			log.Println("需要wid：", v.Wid)
-			log.Println("需要formWid：", v.FormWid)
-			log.Println("是否提交过了（0：没有提交，1：提交过了）：", v.IsHandled)
-			return v.Wid, v.IsHandled
-			//PostDetail(v.Wid)
-		}
-	} else {
-		log.Println("没有需要处理的表单......忽略，等待下一次执行")
+	fmt.Println(string(body))
+	for k, v := range list.Datas.Rows {
+		log.Println(k+1, "条待处理")
+		log.Println("发布人：", v.SenderUserName)
+		log.Println("创建时间：", v.CreateTime)
+		log.Println("开始时间：", v.StartTime)
+		log.Println("结束时间：", v.EndTime)
+		log.Println("当前时间：", v.CurrentTime)
+		log.Println("需要wid：", v.Wid)
+		log.Println("需要formWid：", v.FormWid)
+		log.Println("是否提交过了（0：没有提交，1：提交过了）：", v.IsHandled)
+		return v.Wid, v.IsHandled
+		//PostDetail(v.Wid)
 	}
+
+	log.Println("没有需要处理的表单......忽略，等待下一次执行")
+
 	return "", 1
 }

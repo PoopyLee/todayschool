@@ -16,19 +16,19 @@ import (
 )
 
 type Forms struct {
-	Wid           string        `json:"wid"`
-	FormWid       string        `json:"formWid"`
-	FieldType     string        `json:"fieldType"`
-	Title         string        `json:"title"`
-	Description   string        `json:"description"`
-	IsRequired    bool          `json:"isRequired"`
-	HasOtherItems bool          `json:"hasOtherItems"`
-	Sort          int           `json:"sort"`
-	ColName       string        `json:"colName"`
-	FieldItems    [] FieldItems `json:"fieldItems"`
-	ScoringRule   string        `json:"scoringRule"`
-	Score         interface{}   `json:"score"`
-	AnswerContent interface{}   `json:"answerContent"`
+	Wid           string       `json:"wid"`
+	FormWid       string       `json:"formWid"`
+	FieldType     string       `json:"fieldType"`
+	Title         string       `json:"title"`
+	Description   string       `json:"description"`
+	IsRequired    bool         `json:"isRequired"`
+	HasOtherItems bool         `json:"hasOtherItems"`
+	Sort          int          `json:"sort"`
+	ColName       string       `json:"colName"`
+	FieldItems    []FieldItems `json:"fieldItems"`
+	ScoringRule   string       `json:"scoringRule"`
+	Score         interface{}  `json:"score"`
+	AnswerContent interface{}  `json:"answerContent"`
 	BasicConfig   struct {
 		MinValue       interface{} `json:"minValue"`
 		MaxValue       interface{} `json:"maxValue"`
@@ -146,8 +146,9 @@ func GetFormFileds(formwid, collectorwid string, con *config.RootConfig) *GetFor
 				} else {
 					color.New(color.FgHiCyan).Println("必填字段：", v.Title)
 				}
-				color.New(color.FgHiCyan).Println("内容选择(只需输入序号即可！)：")
+
 				for _, b := range v.FieldItems {
+					color.New(color.FgHiCyan).Println("内容选择(只需输入序号即可！)：")
 					color.New(color.FgHiCyan).Println("      ", b.ItemWid, "<---------->", b.Content)
 				}
 				if v.BasicConfig.MaxValue == nil && v.BasicConfig.MinValue == nil {
