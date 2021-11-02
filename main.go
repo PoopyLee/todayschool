@@ -38,13 +38,23 @@ func init() {
 	config.GetConfig() //初始化配置文件
 }
 
+var first = true
+
 func main() {
-	SetlogFile()
 	todayschool()
-	StartTimeFunc(SetlogFile)
+	first = false
 	StartTimeFunc(todayschool)
 }
 func todayschool() {
+	//设置每日一个日志文件
+	filename := time.Now().Format("2006-01-02") + ".log"
+	_, err := os.Stat(filename)
+	if err != nil {
+		os.Create(filename)
+	}
+	logfile, _ := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0777)
+	log.SetOutput(logfile)
+
 	toform := new(controller.SubmitForm)
 	con := config.GetConfig()
 	if len(con.MOD_AUTH_CAS) == 0 {
@@ -69,7 +79,7 @@ func todayschool() {
 		color.New(color.BgHiRed).Println("config.json文件中的Address为空，请填写！")
 	}
 	wid, ok := controller.PostProcessingList(con)
-	if ok == 0 {
+	if ok == 0 || first {
 		formid, schoolid := controller.PostDetail(wid, con)
 		form := controller.GetFormFileds(formid, wid, con)
 		toform.SchoolTaskWid = schoolid
@@ -119,7 +129,7 @@ func todayschool() {
 
 			}
 		}
-		//fmt.Println(str)
+		//fmt.Println("等待提交")
 		controller.SubmitFormFileds(submitAes, str, con)
 	} else {
 		log.Println("无需填写...等待下一次运行")
@@ -165,15 +175,4 @@ func StartTimeFunc(f func()) {
 	c.Start()
 	defer c.Stop()
 	select {}
-}
-
-func SetlogFile() {
-	//设置每日一个日志文件
-	filename := time.Now().Format("2006-01-02") + ".log"
-	_, err := os.Stat(filename)
-	if err != nil {
-		os.Create(filename)
-	}
-	logfile, _ := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0777)
-	log.SetOutput(logfile)
 }
