@@ -30,7 +30,3 @@ func SendMail(title, to, subject, body, format string) error {
 	err := smtp.SendMail(SMTPHost+SMTPPort, smtp.PlainAuth("", SMTPUsername, SMTPPassword, SMTPHost), SMTPUsername, []string{to}, []byte(data))
 	return err
 }
-
-//
-//err := SendMail( title,to,subject,body,"html" )
-//err := SendMail( title,to,subject,body,"plain" )
